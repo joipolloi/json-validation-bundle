@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the JsonValidationBundle package.
+ *
+ * (c) John Noel <john.noel@joipolloi.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace JoiPolloi\Bundle\JsonValidationBundle\Annotation;
 
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent,
     Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-//use ChaosTangent\Media\JsonValidator\JsonValidator;
+use JoiPolloi\Bundle\JsonValidationBundle\JsonValidator\JsonValidator;
 
 /**
  * Validate JSON listener
