@@ -1,0 +1,21 @@
+{
+    "name": "joipolloi/json-validation-bundle",
+    "description": "This bundle provides a way to validate JSON passed to a request against a schema",
+    "type": "symfony-bundle",
+    "require": {
+        "symfony/config": "^3.2",
+        "symfony/http-foundation": "^3.2",
+        "justinrainbow/json-schema": "^5.2",
+        "sensio/framework-extra-bundle": "^3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "John Noel",
+            "email": "john.noel@joipolloi.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "JoiPolloi\\Bundle\\JsonValidationBundle\\": "" }
+    }
+}
