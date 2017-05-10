@@ -1,6 +1,6 @@
 # JSON Validation Bundle
 
-Provides an annotation to validate JSON passed to a controller action against a schema.
+A Symfony bundle that provides an annotation to validate JSON passed to a controller action against a schema.
 
 ## Usage
 
@@ -23,11 +23,29 @@ class MyController
 
 Now any time the action is called, the passed JSON will be validated against the schema. If there are no validation errors, the action will execute as normal. If there are errors then a 400 (bad request) response will be returned.
 
+## Installation
+
+Use composer: `composer require joipolloi/json-validation-bundle`
+
+Open `AppKernel.php` in your Symfony project:
+
+```php
+$bundles = array(
+    // ...
+    new JoiPolloi\Bundle\JsonValidationBundle\JsonValidationBundle(),
+    // ...
+);
+```
+
+## Configuration
+
+No further configuration is required or provided.
+
 ## Details
 
-Behind the scenes the bundle will validate against the request content (i.e. `$request->getContent();`) using the [justinrainbow/json-schema](https://github.com/justinrainbow/json-schema) library.
+Behind the scenes the bundle registers an event listener on the `kernel.controller` event that will validate the request content (i.e. `$request->getContent();`) against a JSON schema using the [justinrainbow/json-schema](https://github.com/justinrainbow/json-schema) library.
 
-If there is an issue locating the JSON schema, decoding the JSON or validating against the JSON, a BadRequestHttpException is thrown.
+If there is an issue locating the JSON schema, decoding the JSON, decoding the JSON schema or validating against the JSON, a BadRequestHttpException is thrown with an error message.
 
 ## Options
 
@@ -42,6 +60,23 @@ In order to save time and processing, you can get the validated JSON as an objec
 public function myAction(Request $request, $validJson)
 {
     // $request->attributes->get('validJson') === $validJson
+}
+```
+
+If you use the [Symfony form component](http://symfony.com/doc/current/forms.html) you can cast the `$validJson` object to an array and supply it directly to the form as if handling a standard request:
+
+```php
+/**
+ * @ValidateJson("@MyBundle/Resources/schema/action-schema.json")
+ */
+public function myAction($validJson)
+{
+    $form = $this->createForm(MyFormType::class);
+    $form->submit((array)$validJson);
+
+    if ($form->isValid()) {
+        // ...
+    }
 }
 ```
 
