@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="joipolloi_jsonvalidation.json_validator">
+            <argument type="service" id="file_locator" />
+        </service>
+        <service id="joipolloi_jsonvalidation.validate_json_listener">
+            <argument type="service" id="joipolloi_jsonvalidation.json_validator" />
+        </service>
+    </services>
+</container>
