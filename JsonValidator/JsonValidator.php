@@ -13,7 +13,8 @@ namespace JoiPolloi\Bundle\JsonValidationBundle\JsonValidator;
 
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use JsonSchema\Validator;
+use JsonSchema\Validator,
+    JsonSchema\Exception\JsonDecodingException;
 
 /**
  * JSON validator
@@ -76,7 +77,19 @@ class JsonValidator
         }
 
         $validator = new Validator();
-        $validator->check($data, (object)[ '$ref' => 'file://'.$schema ]);
+
+        try {
+            $validator->check($data, (object)[ '$ref' => 'file://'.$schema ]);
+        } catch (JsonDecodingException $e) {
+            $this->validationErrors[] = [
+                'property' => null,
+                'pointer' => null,
+                'message' => $e->getMessage(),
+                'constraint' => null,
+            ];
+
+            return null;
+        }
 
         if (!$validator->isValid()) {
             $this->validationErrors = $validator->getErrors();
