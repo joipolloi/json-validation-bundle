@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the JsonValidationBundle package.
+ *
+ * (c) John Noel <john.noel@joipolloi.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace JoiPolloi\Bundle\JsonValidationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
