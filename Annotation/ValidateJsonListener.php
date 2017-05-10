@@ -11,7 +11,6 @@
 
 namespace JoiPolloi\Bundle\JsonValidationBundle\Annotation;
 
-use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent,
     Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use JoiPolloi\Bundle\JsonValidationBundle\JsonValidator\JsonValidator;
@@ -24,17 +23,14 @@ use JoiPolloi\Bundle\JsonValidationBundle\JsonValidator\JsonValidator;
  */
 class ValidateJsonListener
 {
-    /** @var AnnotationReader */
-    protected $reader;
     /** @var JsonValidator */
     protected $jsonValidator;
 
     /**
-     * @param AnnotationReader $reader
+     * @param JsonValidator $jsonValidator
      */
-    public function __construct(Reader $reader, JsonValidator $jsonValidator)
+    public function __construct(JsonValidator $jsonValidator)
     {
-        $this->reader = $reader;
         $this->jsonValidator = $jsonValidator;
     }
 
