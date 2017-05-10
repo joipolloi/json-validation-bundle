@@ -3,7 +3,8 @@
 namespace JoiPolloi\Bundle\JsonValidationBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerBuilder,
+    Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
  * @author John Noel <john.noel@joipolloi.com>
  * @package JsonValidationExtension
  */
-class JoiPolloiJsonValidationExtension extends ConfigurableExtension
+class JsonValidationExtension extends ConfigurableExtension
 {
     /**
      * {@inheritDoc}

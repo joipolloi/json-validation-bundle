@@ -5,10 +5,10 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="joipolloi_jsonvalidation.json_validator">
+        <service id="joipolloi_jsonvalidation.json_validator" class="JoiPolloi\Bundle\JsonValidationBundle\JsonValidator\JsonValidator">
             <argument type="service" id="file_locator" />
         </service>
-        <service id="joipolloi_jsonvalidation.validate_json_listener">
+        <service id="joipolloi_jsonvalidation.validate_json_listener" class="JoiPolloi\Bundle\JsonValidationBundle\Annotation\ValidateJsonListener">
             <argument type="service" id="joipolloi_jsonvalidation.json_validator" />
             <tag name="kernel.event_listener" event="kernel.controller" priority="-100" />
         </service>
