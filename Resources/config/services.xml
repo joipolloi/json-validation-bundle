@@ -10,6 +10,7 @@
         </service>
         <service id="joipolloi_jsonvalidation.validate_json_listener">
             <argument type="service" id="joipolloi_jsonvalidation.json_validator" />
+            <tag name="kernel.event_listener" event="kernel.controller" priority="-100" />
         </service>
     </services>
 </container>
