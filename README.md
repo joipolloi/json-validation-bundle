@@ -1,5 +1,7 @@
 # JSON Validation Bundle
 
+[![Build Status](https://api.travis-ci.org/joipolloi/json-validation-bundle.svg)](https://travis-ci.org/joipolloi/json-validation-bundle)
+
 A Symfony bundle that provides an annotation to validate JSON passed to a controller action against a schema.
 
 ## Usage
