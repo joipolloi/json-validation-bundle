@@ -6,7 +6,7 @@
         "symfony/config": "^3.2",
         "symfony/http-foundation": "^3.2",
         "justinrainbow/json-schema": "^5.2",
-        "sensio/framework-extra-bundle": "^3.0"
+        "sensio/framework-extra-bundle": ">=3.0"
     },
     "license": "MIT",
     "authors": [
