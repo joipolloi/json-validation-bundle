@@ -47,7 +47,7 @@ No further configuration is required or provided.
 
 Behind the scenes the bundle registers an event listener on the `kernel.controller` event that will validate the request content (i.e. `$request->getContent();`) against a JSON schema using the [justinrainbow/json-schema](https://github.com/justinrainbow/json-schema) library.
 
-If there is an issue locating the JSON schema, decoding the JSON, decoding the JSON schema or validating against the JSON, a BadRequestHttpException is thrown with an error message.
+If there is an issue locating the JSON schema, decoding the JSON, decoding the JSON schema or validating against the JSON, a [JsonValidationException](Exception/JsonValidationException.php) (which extends BadRequestHttpException) is thrown with an error message.
 
 ## Options
 

@@ -58,7 +58,7 @@ class ValidateJsonListenerTest extends TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedException JoiPolloi\Bundle\JsonValidationBundle\Exception\JsonValidationException
      */
     public function testInvalidJson()
     {

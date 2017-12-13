@@ -13,7 +13,8 @@ namespace JoiPolloi\Bundle\JsonValidationBundle\Annotation;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent,
     Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use JoiPolloi\Bundle\JsonValidationBundle\JsonValidator\JsonValidator;
+use JoiPolloi\Bundle\JsonValidationBundle\JsonValidator\JsonValidator,
+    JoiPolloi\Bundle\JsonValidationBundle\Exception\JsonValidationException;
 
 /**
  * Validate JSON listener
@@ -62,7 +63,7 @@ class ValidateJsonListener
 
         if ($validJson === null) {
             $errors = $this->jsonValidator->getValidationErrors();
-            throw new BadRequestHttpException('Invalid JSON passed: '.$this->formatError($errors[0]));
+            throw new JsonValidationException('Invalid JSON passed: '.$this->formatError($errors[0]));
         }
 
         // allow for controller methods to receive the validated JSON
