@@ -24,4 +24,27 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class JsonValidationException extends BadRequestHttpException
 {
+    /** @var array */
+    protected $errors;
+
+    /**
+     * @param string $message The exception message
+     * @param array $errors Any validation errors
+     */
+    public function __construct(string $message, array $errors = [])
+    {
+        $this->errors = $errors;
+
+        parent::__construct($message);
+    }
+
+    /**
+     * Get the validation errors (if any) that triggered this exception
+     *
+     * @return array
+     */
+    public function getErrors() : array
+    {
+        return $this->errors;
+    }
 }

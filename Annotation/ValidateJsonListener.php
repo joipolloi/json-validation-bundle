@@ -63,25 +63,10 @@ class ValidateJsonListener
 
         if ($validJson === null) {
             $errors = $this->jsonValidator->getValidationErrors();
-            throw new JsonValidationException('Invalid JSON passed: '.$this->formatError($errors[0]));
+            throw new JsonValidationException('Invalid JSON passed', $errors);
         }
 
         // allow for controller methods to receive the validated JSON
         $request->attributes->set('validJson', $validJson);
-    }
-
-    /**
-     * Format a validation error for display
-     *
-     * @param array $error
-     * @return string
-     */
-    protected function formatError(array $error)
-    {
-        if (!empty($error['constraint'])) {
-            return sprintf('[%s] %s', $error['constraint'], $error['message']);
-        }
-
-        return $error['message'];
     }
 }
