@@ -63,9 +63,9 @@ class JsonValidationExceptionListenerTest extends TestCase
         $listener = new JsonValidationExceptionListener();
         $listener->onKernelException($event);
 
-        $json = json_decode($event->getResponse()->getContent());
+        $json = json_decode($event->getResponse()->getContent(), true);
 
-        $this->assertEquals([ 'Test message' ], $json->errors);
+        $this->assertEquals([ [ 'message' => 'Test message' ] ], $json['errors']);
     }
 
     public function testContraintError()
@@ -82,9 +82,16 @@ class JsonValidationExceptionListenerTest extends TestCase
         $listener = new JsonValidationExceptionListener();
         $listener->onKernelException($event);
 
-        $json = json_decode($event->getResponse()->getContent());
+        $json = json_decode($event->getResponse()->getContent(), true);
 
-        $this->assertEquals([ '[a, b, c] d' ], $json->errors);
+        $this->assertEquals([
+            [
+                'constraint' => 'a',
+                'property' => 'b',
+                'pointer' => 'c',
+                'message' => 'd',
+            ]
+        ], $json['errors']);
     }
 
     public function testMixedErrors()
@@ -102,9 +109,17 @@ class JsonValidationExceptionListenerTest extends TestCase
         $listener = new JsonValidationExceptionListener();
         $listener->onKernelException($event);
 
-        $json = json_decode($event->getResponse()->getContent());
+        $json = json_decode($event->getResponse()->getContent(), true);
 
-        $this->assertEquals([ 'Test message', '[a, b, c] d' ], $json->errors);
+        $this->assertEquals([
+            [ 'message' => 'Test message' ],
+            [
+                'constraint' => 'a',
+                'property' => 'b',
+                'pointer' => 'c',
+                'message' => 'd',
+            ]
+        ], $json['errors']);
     }
 
     protected function getEvent(\Exception $exception) : GetResponseForExceptionEvent

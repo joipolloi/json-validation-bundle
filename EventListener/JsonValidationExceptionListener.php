@@ -60,18 +60,6 @@ class JsonValidationExceptionListener
      */
     protected function formatErrors(array $errors) : array
     {
-        return array_map(function($error) {
-            if (!empty($error['constraint'])) {
-                return sprintf(
-                    '[%s, %s, %s] %s',
-                    $error['constraint'],
-                    $error['property'],
-                    $error['pointer'],
-                    $error['message']
-                );
-            }
-
-            return $error['message'];
-        }, $errors);
+        return array_map('array_filter', $errors);
     }
 }
