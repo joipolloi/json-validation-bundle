@@ -123,6 +123,19 @@ class JsonValidatorTest extends TestCase
         $this->assertEquals($object->test, 'hello');
     }
 
+    public function testValidJsonRequestAsArray()
+    {
+        $validator = $this->getJsonValidator();
+        $request = new Request([], [], [], [], [], [], '{"test": "hello"}');
+
+        $array = $validator->validateJsonRequest($request, 'schema-simple.json', false, true);
+        $errors = $validator->getValidationErrors();
+
+        $this->assertTrue(is_array($array));
+        $this->assertCount(0, $errors);
+        $this->assertEquals($array['test'], 'hello');
+    }
+
     protected function getJsonValidator() : JsonValidator
     {
         $locator = new FileLocator([ __DIR__ ]);

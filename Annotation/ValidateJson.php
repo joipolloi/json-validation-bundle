@@ -41,6 +41,13 @@ class ValidateJson extends ConfigurationAnnotation
      * @var array
      */
     private $methods = [];
+    /**
+     * Whether to decode JSON as an associative array
+     *
+     * @var bool
+     * @see http://php.net/manual/en/function.json-decode.php
+     */
+    private $asArray = false;
 
     /**
      * @param array $data An array of key/value parameters
@@ -69,7 +76,7 @@ class ValidateJson extends ConfigurationAnnotation
 
     public function setEmptyIsValid(bool $emptyIsValid)
     {
-        $this->emptyIsValid = (bool)$emptyIsValid;
+        $this->emptyIsValid = $emptyIsValid;
     }
 
     public function getEmptyIsValid() : bool
@@ -89,6 +96,16 @@ class ValidateJson extends ConfigurationAnnotation
     public function getMethods() : array
     {
         return $this->methods;
+    }
+
+    public function getAsArray() : bool
+    {
+        return $this->asArray;
+    }
+
+    public function setAsArray(bool $asArray)
+    {
+        $this->asArray = $asArray;
     }
 
     /**

@@ -42,10 +42,11 @@ class JsonValidator
      *
      * @param string $json
      * @param string $schemaPath
+     * @param bool $asArray Whether to decode the JSON as an associative array
      * @return mixed The decoded JSON as an object (stdClass) if the JSON is
      *               valid, otherwise null
      */
-    public function validateJson($json, $schemaPath)
+    public function validateJson($json, $schemaPath, $asArray = false)
     {
         $this->validationErrors = [];
         $schema = null;
@@ -96,6 +97,11 @@ class JsonValidator
             return null;
         }
 
+        if ($asArray) {
+            // wasteful, especially with large JSON objects
+            return json_decode($json, $asArray);
+        }
+
         return $data;
     }
 
@@ -107,7 +113,7 @@ class JsonValidator
      * @param bool $emptyIsValid Whether an empty request is considered valid
      * @return bool
      */
-    public function validateJsonRequest(Request $request, $schemaPath, $emptyIsValid = false)
+    public function validateJsonRequest(Request $request, $schemaPath, $emptyIsValid = false, $asArray = false)
     {
         $content = $request->getContent();
 
@@ -115,7 +121,7 @@ class JsonValidator
             return true;
         }
 
-        return $this->validateJson($content, $schemaPath);
+        return $this->validateJson($content, $schemaPath, $asArray);
     }
 
     /**
