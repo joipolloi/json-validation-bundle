@@ -12,5 +12,6 @@
             <argument type="service" id="joipolloi_jsonvalidation.json_validator" />
             <tag name="kernel.event_listener" event="kernel.controller" priority="-100" />
         </service>
+        <service id="joipolloi_jsonvalidation.listener.jsonvalidationexception" class="JoiPolloi\Bundle\JsonValidationBundle\EventListener\JsonValidationExceptionListener" />
     </services>
 </container>

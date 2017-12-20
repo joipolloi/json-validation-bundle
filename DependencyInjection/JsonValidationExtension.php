@@ -34,5 +34,18 @@ class JsonValidationExtension extends ConfigurableExtension
         ]));
 
         $loader->load('services.xml');
+
+        if ($config['enable_problemjson_listener']) {
+            $container->getDefinition('joipolloi_jsonvalidation.listener.jsonvalidationexception')
+                ->addTag('kernel.event_listener', [ 'event' => 'kernel.exception' ]);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAlias()
+    {
+        return 'joipolloi_jsonvalidation';
     }
 }

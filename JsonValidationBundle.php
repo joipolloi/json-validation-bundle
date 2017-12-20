@@ -13,6 +13,7 @@ namespace JoiPolloi\Bundle\JsonValidationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use JoiPolloi\Bundle\JsonValidationBundle\DependencyInjection\JsonValidationExtension;
 
 /**
  * JSON Validation bundle
@@ -22,8 +23,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class JsonValidationBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
+    /**
+     * {@inheritDoc}
+     */
+    public function getContainerExtension()
     {
-        parent::build($container);
+        return new JsonValidationExtension();
     }
 }
