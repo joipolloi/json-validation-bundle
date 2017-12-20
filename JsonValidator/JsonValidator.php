@@ -111,6 +111,8 @@ class JsonValidator
      * @param Request $request
      * @param string $schemaPath
      * @param bool $emptyIsValid Whether an empty request is considered valid
+     * @param bool $asArray Whether to decode the JSON request as an
+     *                      associative array
      * @return bool
      */
     public function validateJsonRequest(Request $request, $schemaPath, $emptyIsValid = false, $asArray = false)

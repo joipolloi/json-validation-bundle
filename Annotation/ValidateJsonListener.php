@@ -62,7 +62,7 @@ class ValidateJsonListener
             $request,
             $annotation->getPath(),
             $annotation->getEmptyIsValid(),
-            $annotation->getAsArray()
+            $this->getAsArray($event->getController())
         );
 
         if ($validJson === null) {
@@ -72,5 +72,36 @@ class ValidateJsonListener
 
         // allow for controller methods to receive the validated JSON
         $request->attributes->set('validJson', $validJson);
+    }
+
+    /**
+     * Decide whether the validated JSON should be decoded as an array
+     *
+     * This is based upon the type hint for the $validJson argument
+     *
+     * @return bool
+     * @see Sensio\Bundle\FrameworkExtraBundle\EventListener\ParamConverterListener::onKernelController
+     */
+    protected function getAsArray($controller) : bool
+    {
+        $r = null;
+
+        if (is_array($controller)) {
+            $r = new \ReflectionMethod($controller[0], $controller[1]);
+        } elseif (is_object($controller) && is_callable($controller, '__invoke')) {
+            $r = new \ReflectionMethod($controller, '__invoke');
+        } else {
+            $r = new \ReflectionFunction($controller);
+        }
+
+        foreach ($r->getParameters() as $param) {
+            if ($param->getName() !== 'validJson') {
+                continue;
+            }
+
+            return $param->isArray();
+        }
+
+        return false;
     }
 }

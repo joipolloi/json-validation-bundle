@@ -90,6 +90,28 @@ class ValidateJsonListenerTest extends TestCase
         $this->assertEquals($request->attributes->get('validJson')->test, 'hello');
     }
 
+    public function testValidJsonArray()
+    {
+        $annotation = new ValidateJson([ 'path' => 'schema-simple.json' ]);
+        $request = Request::create('/', 'POST', [], [], [], [], '{"test": "hello"}');
+        $request->attributes->set('_validate_json', $annotation);
+
+        $kernel = $this->getMockBuilder(HttpKernelInterface::class)
+            ->getMock();
+        $controller = function(array $validJson) { };
+        $type = HttpKernelInterface::MASTER_REQUEST;
+        $event = new FilterControllerEvent($kernel, $controller, $request, $type);
+
+        $listener = $this->getValidateJsonListener();
+
+        $isNull = $listener->onKernelController($event);
+
+        $this->assertNull($isNull);
+        $this->assertTrue($request->attributes->has('validJson'));
+        $this->assertTrue(is_array($request->attributes->get('validJson')));
+        $this->assertEquals($request->attributes->get('validJson')['test'], 'hello');
+    }
+
     protected function getValidateJsonListener() : ValidateJsonListener
     {
         $locator = new FileLocator([ __DIR__ ]);
@@ -101,7 +123,7 @@ class ValidateJsonListenerTest extends TestCase
     {
         $kernel = $this->getMockBuilder(HttpKernelInterface::class)
             ->getMock();
-        $controller = function() { };
+        $controller = function($validJson) { };
         $type = HttpKernelInterface::MASTER_REQUEST;
 
         return new FilterControllerEvent($kernel, $controller, $request, $type);
