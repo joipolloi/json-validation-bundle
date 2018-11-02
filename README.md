@@ -27,7 +27,7 @@ Now any time the action is called, the passed JSON will be validated against the
 
 ## Installation
 
-Use composer: `composer require joipolloi/json-validation-bundle`
+Use composer: `composer require kyrylich/json-valid-bundle`
 
 Open `AppKernel.php` in your Symfony project:
 
