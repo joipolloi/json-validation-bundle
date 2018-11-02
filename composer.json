@@ -1,5 +1,5 @@
 {
-    "name": "joipolloi/json-validation-bundle",
+    "name": "kyrylich/json-valid-bundle",
     "description": "This bundle provides a way to validate JSON passed to a request against a schema",
     "type": "symfony-bundle",
     "require": {
@@ -11,8 +11,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "John Noel",
-            "email": "john.noel@joipolloi.com"
+            "name": "Kyrylich",
+            "email": "kyrylomeretsky@gmail.com"
         }
     ],
     "autoload": {
