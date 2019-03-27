@@ -1,5 +1,5 @@
 {
-    "name": "kyrylich/json-valid-bundle",
+    "name": "joipolloi/json-validation-bundle",
     "description": "This bundle provides a way to validate JSON passed to a request against a schema",
     "type": "symfony-bundle",
     "require": {
