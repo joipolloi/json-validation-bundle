@@ -1,6 +1,6 @@
 {
     "name": "mrsuh/json-validation-bundle",
-    "description": "This bundle provides a way to validate JSON in request and response against a schema",
+    "description": "This bundle provides a way to validate JSON in request/response against a schema",
     "type": "symfony-bundle",
     "require": {
         "php": ">=7.1",
@@ -17,8 +17,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "John Noel",
-            "email": "john.noel@joipolloi.com"
+            "name": "Anton Sukhachev",
+            "email": "mrsuh6@gmail.com"
         }
     ],
     "autoload": {
