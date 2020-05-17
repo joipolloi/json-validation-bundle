@@ -1,36 +1,22 @@
 <?php
 
-/*
- * This file is part of the JsonValidationBundle package.
- *
- * (c) John Noel <john.noel@joipolloi.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Tests;
 
+use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonRequest;
+use Mrsuh\JsonValidationBundle\EventListener\JsonValidationExceptionListener;
+use Mrsuh\JsonValidationBundle\Exception\JsonValidationRequestException;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\HttpKernelInterface,
-    Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent,
-    Symfony\Component\HttpKernel\Tests\Fixtures\KernelForTest;
-use Symfony\Component\HttpFoundation\{Request,Response};
-use JoiPolloi\Bundle\JsonValidationBundle\EventListener\JsonValidationExceptionListener,
-    JoiPolloi\Bundle\JsonValidationBundle\Exception\JsonValidationException;
+use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Log\Logger;
 
-/**
- * JSON validation exception listener tests
- *
- * @author John Noel <john.noel@joipolloi.com>
- * @package JsonValidationExtension
- */
 class JsonValidationExceptionListenerTest extends TestCase
 {
     public function testNonJsonValidationException()
     {
-        $event = $this->getEvent(new \RuntimeException('Not JsonValidationException'));
-        $listener = new JsonValidationExceptionListener();
+        $event    = $this->getEvent(new \RuntimeException('Not JsonValidationException'));
+        $listener = new JsonValidationExceptionListener(new Logger());
 
         $listener->onKernelException($event);
 
@@ -39,8 +25,8 @@ class JsonValidationExceptionListenerTest extends TestCase
 
     public function testEmptyErrors()
     {
-        $event = $this->getEvent(new JsonValidationException('', []));
-        $listener = new JsonValidationExceptionListener();
+        $event    = $this->getEvent($this->createJsonValidationRequestException('', []));
+        $listener = new JsonValidationExceptionListener(new Logger());
 
         $listener->onKernelException($event);
 
@@ -56,30 +42,28 @@ class JsonValidationExceptionListenerTest extends TestCase
 
     public function testMessageOnlyError()
     {
-        $event = $this->getEvent(new JsonValidationException('', [
-            [ 'message' => 'Test message' ],
-        ]));
+        $event = $this->getEvent($this->createJsonValidationRequestException('', [['message' => 'Test message'],]));
 
-        $listener = new JsonValidationExceptionListener();
+        $listener = new JsonValidationExceptionListener(new Logger());
         $listener->onKernelException($event);
 
         $json = json_decode($event->getResponse()->getContent(), true);
 
-        $this->assertEquals([ [ 'message' => 'Test message' ] ], $json['errors']);
+        $this->assertEquals([['message' => 'Test message']], $json['errors']);
     }
 
     public function testContraintError()
     {
-        $event = $this->getEvent(new JsonValidationException('', [
+        $event = $this->getEvent($this->createJsonValidationRequestException('', [
             [
                 'constraint' => 'a',
-                'property' => 'b',
-                'pointer' => 'c',
-                'message' => 'd',
+                'property'   => 'b',
+                'pointer'    => 'c',
+                'message'    => 'd',
             ]
         ]));
 
-        $listener = new JsonValidationExceptionListener();
+        $listener = new JsonValidationExceptionListener(new Logger());
         $listener->onKernelException($event);
 
         $json = json_decode($event->getResponse()->getContent(), true);
@@ -87,47 +71,56 @@ class JsonValidationExceptionListenerTest extends TestCase
         $this->assertEquals([
             [
                 'constraint' => 'a',
-                'property' => 'b',
-                'pointer' => 'c',
-                'message' => 'd',
+                'property'   => 'b',
+                'pointer'    => 'c',
+                'message'    => 'd',
             ]
         ], $json['errors']);
     }
 
     public function testMixedErrors()
     {
-        $event = $this->getEvent(new JsonValidationException('', [
-            [ 'message' => 'Test message' ],
+        $event = $this->getEvent($this->createJsonValidationRequestException('', [
+            ['message' => 'Test message'],
             [
                 'constraint' => 'a',
-                'property' => 'b',
-                'pointer' => 'c',
-                'message' => 'd',
+                'property'   => 'b',
+                'pointer'    => 'c',
+                'message'    => 'd',
             ]
         ]));
 
-        $listener = new JsonValidationExceptionListener();
+        $listener = new JsonValidationExceptionListener(new Logger());
         $listener->onKernelException($event);
 
         $json = json_decode($event->getResponse()->getContent(), true);
 
         $this->assertEquals([
-            [ 'message' => 'Test message' ],
+            ['message' => 'Test message'],
             [
                 'constraint' => 'a',
-                'property' => 'b',
-                'pointer' => 'c',
-                'message' => 'd',
+                'property'   => 'b',
+                'pointer'    => 'c',
+                'message'    => 'd',
             ]
         ], $json['errors']);
     }
 
-    protected function getEvent(\Exception $exception) : GetResponseForExceptionEvent
+    protected function getEvent(\Throwable $exception): ExceptionEvent
     {
-        $kernel = new KernelForTest('test', true);
-        $request = Request::create('/');
+        $kernel      = $this->getMockBuilder(HttpKernelInterface::class)
+                            ->getMock();
+        $request     = Request::create('/');
         $requestType = HttpKernelInterface::MASTER_REQUEST;
 
-        return new GetResponseForExceptionEvent($kernel, $request, $requestType, $exception);
+        return new ExceptionEvent($kernel, $request, $requestType, $exception);
+    }
+
+    protected function createJsonValidationRequestException(string $message, array $errors = [])
+    {
+        $annotation = new ValidateJsonRequest(['path' => '/']);
+        $request    = Request::create('/');
+
+        return new JsonValidationRequestException($message, $request, $annotation, $errors);
     }
 }

@@ -1,5 +1,5 @@
 {
-    "id": "https://joipolloi.com/json-validation-bundle/schemas/schema-simple.json",
+    "id": "id",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "description": "Simple JSON schema test",
     "type": "object",
@@ -9,5 +9,7 @@
             "minLength": 1
         }
     },
-    "required": [ "test" ]
+    "required": [
+        "test"
+    ]
 }

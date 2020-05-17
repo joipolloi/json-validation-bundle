@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="joipolloi_jsonvalidation.json_validator" class="JoiPolloi\Bundle\JsonValidationBundle\JsonValidator\JsonValidator">
-            <argument type="service" id="file_locator" />
+        <service id="mrsuh_jsonvalidation.json_validator"
+                 class="Mrsuh\JsonValidationBundle\JsonValidator\JsonValidator">
+            <argument type="service" id="file_locator"/>
         </service>
-        <service id="joipolloi_jsonvalidation.validate_json_listener" class="JoiPolloi\Bundle\JsonValidationBundle\Annotation\ValidateJsonListener">
-            <argument type="service" id="joipolloi_jsonvalidation.json_validator" />
-            <tag name="kernel.event_listener" event="kernel.controller" priority="-100" />
+        <service id="mrsuh_jsonvalidation.validate_json_request_listener"
+                 class="Mrsuh\JsonValidationBundle\Annotation\ValidateJsonRequestListener">
+            <argument type="service" id="mrsuh_jsonvalidation.json_validator"/>
         </service>
-        <service id="joipolloi_jsonvalidation.listener.jsonvalidationexception" class="JoiPolloi\Bundle\JsonValidationBundle\EventListener\JsonValidationExceptionListener" />
+        <service id="mrsuh_jsonvalidation.validate_json_response_listener"
+                 class="Mrsuh\JsonValidationBundle\Annotation\ValidateJsonResponseListener">
+            <argument type="service" id="mrsuh_jsonvalidation.json_validator"/>
+            <argument type="service" id="logger"/>
+        </service>
+        <service id="mrsuh_jsonvalidation.json_validation_exception_listener"
+                 class="Mrsuh\JsonValidationBundle\EventListener\JsonValidationExceptionListener">
+            <argument type="service" id="logger"/>
+        </service>
     </services>
+
 </container>

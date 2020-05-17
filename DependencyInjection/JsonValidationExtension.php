@@ -1,51 +1,44 @@
 <?php
 
-/*
- * This file is part of the JsonValidationBundle package.
- *
- * (c) John Noel <john.noel@joipolloi.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Mrsuh\JsonValidationBundle\DependencyInjection;
 
-namespace JoiPolloi\Bundle\JsonValidationBundle\DependencyInjection;
-
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder,
-    Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-/**
- * Bundle extension
- *
- * @author John Noel <john.noel@joipolloi.com>
- * @package JsonValidationExtension
- */
 class JsonValidationExtension extends ConfigurableExtension
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function loadInternal(array $config, ContainerBuilder $container)
+    public function loadInternal(array $config, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator([
-            __DIR__.'/../Resources/config/'
+            __DIR__ . '/../Resources/config/'
         ]));
 
         $loader->load('services.xml');
 
-        if ($config['enable_problemjson_listener']) {
-            $container->getDefinition('joipolloi_jsonvalidation.listener.jsonvalidationexception')
-                ->addTag('kernel.event_listener', [ 'event' => 'kernel.exception' ]);
+        if ($config['enable_request_listener']) {
+            $container->getDefinition('mrsuh_jsonvalidation.validate_json_request_listener')
+                      ->addTag('kernel.event_listener', ['event' => 'kernel.controller', 'priority' => -100]);
+        }
+
+        if ($config['enable_response_listener']) {
+            $container->getDefinition('mrsuh_jsonvalidation.validate_json_response_listener')
+                      ->addTag('kernel.event_listener', ['event' => 'kernel.response', 'priority' => -100]);
+        }
+
+        if ($config['enable_exception_listener']) {
+            $container->getDefinition('mrsuh_jsonvalidation.json_validation_exception_listener')
+                      ->addTag('kernel.event_listener', ['event' => 'kernel.exception', 'priority' => -100]);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getAlias()
+    public function getAlias(): string
     {
-        return 'joipolloi_jsonvalidation';
+        return 'mrsuh_jsonvalidation';
     }
 }
