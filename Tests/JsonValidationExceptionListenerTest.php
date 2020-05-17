@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonRequest;
-use Mrsuh\JsonValidationBundle\EventListener\JsonValidationExceptionListener;
+use Mrsuh\JsonValidationBundle\EventListener\ValidateJsonExceptionListener;
 use Mrsuh\JsonValidationBundle\Exception\JsonValidationRequestException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\{Request, Response};
@@ -16,7 +16,7 @@ class JsonValidationExceptionListenerTest extends TestCase
     public function testNonJsonValidationException()
     {
         $event    = $this->getEvent(new \RuntimeException('Not JsonValidationException'));
-        $listener = new JsonValidationExceptionListener(new Logger());
+        $listener = new ValidateJsonExceptionListener(new Logger());
 
         $listener->onKernelException($event);
 
@@ -26,7 +26,7 @@ class JsonValidationExceptionListenerTest extends TestCase
     public function testEmptyErrors()
     {
         $event    = $this->getEvent($this->createJsonValidationRequestException('', []));
-        $listener = new JsonValidationExceptionListener(new Logger());
+        $listener = new ValidateJsonExceptionListener(new Logger());
 
         $listener->onKernelException($event);
 
@@ -44,7 +44,7 @@ class JsonValidationExceptionListenerTest extends TestCase
     {
         $event = $this->getEvent($this->createJsonValidationRequestException('', [['message' => 'Test message'],]));
 
-        $listener = new JsonValidationExceptionListener(new Logger());
+        $listener = new ValidateJsonExceptionListener(new Logger());
         $listener->onKernelException($event);
 
         $json = json_decode($event->getResponse()->getContent(), true);
@@ -63,7 +63,7 @@ class JsonValidationExceptionListenerTest extends TestCase
             ]
         ]));
 
-        $listener = new JsonValidationExceptionListener(new Logger());
+        $listener = new ValidateJsonExceptionListener(new Logger());
         $listener->onKernelException($event);
 
         $json = json_decode($event->getResponse()->getContent(), true);
@@ -90,7 +90,7 @@ class JsonValidationExceptionListenerTest extends TestCase
             ]
         ]));
 
-        $listener = new JsonValidationExceptionListener(new Logger());
+        $listener = new ValidateJsonExceptionListener(new Logger());
         $listener->onKernelException($event);
 
         $json = json_decode($event->getResponse()->getContent(), true);

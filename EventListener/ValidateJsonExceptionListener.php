@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
-class JsonValidationExceptionListener
+class ValidateJsonExceptionListener
 {
     private $logger;
 

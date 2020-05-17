@@ -4,7 +4,6 @@ namespace Mrsuh\JsonValidationBundle\JsonValidator;
 
 use JsonSchema\Exception\JsonDecodingException;
 use JsonSchema\Validator;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\FileLocatorInterface;
 
 class JsonValidator
@@ -12,17 +11,12 @@ class JsonValidator
     /** @var FileLocatorInterface */
     protected $locator;
 
-    protected $logger;
     /** @var array */
     protected $errors = [];
 
-    /**
-     * @param FileLocatorInterface $locator
-     */
-    public function __construct(LoggerInterface $logger, FileLocatorInterface $locator)
+    public function __construct(FileLocatorInterface $locator)
     {
         $this->locator = $locator;
-        $this->logger  = $logger;
     }
 
     /**

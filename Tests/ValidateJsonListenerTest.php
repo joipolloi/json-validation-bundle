@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonRequest;
-use Mrsuh\JsonValidationBundle\EventListener\JsonValidationRequestListener;
+use Mrsuh\JsonValidationBundle\EventListener\ValidateJsonRequestListener;
 use Mrsuh\JsonValidationBundle\Exception\JsonValidationRequestException;
 use Mrsuh\JsonValidationBundle\JsonValidator\JsonValidator;
 use PHPUnit\Framework\TestCase;
@@ -11,7 +11,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Log\Logger;
 
 class ValidateJsonListenerTest extends TestCase
 {
@@ -94,13 +93,12 @@ class ValidateJsonListenerTest extends TestCase
         $this->assertEquals($request->attributes->get('validJson')['test'], 'hello');
     }
 
-    protected function getValidateJsonListener(): JsonValidationRequestListener
+    protected function getValidateJsonListener(): ValidateJsonRequestListener
     {
         $locator   = new FileLocator([__DIR__]);
-        $logger    = new Logger();
-        $validator = new JsonValidator($logger, $locator);
+        $validator = new JsonValidator($locator);
 
-        return new JsonValidationRequestListener($validator);
+        return new ValidateJsonRequestListener($validator);
     }
 
     protected function getControllerEvent(Request $request): ControllerEvent

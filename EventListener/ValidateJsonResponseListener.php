@@ -2,14 +2,12 @@
 
 namespace Mrsuh\JsonValidationBundle\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
 use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonResponse;
 use Mrsuh\JsonValidationBundle\JsonValidator\JsonValidator;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
-class JsonValidationResponseListener
+class ValidateJsonResponseListener
 {
     /** @var JsonValidator */
     protected $jsonValidator;
