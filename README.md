@@ -70,8 +70,9 @@ class MyController
 ```
 
 ### Invalid JSON passed to request
+If invalid JSON passed to request and request and exception listeners enabled<br>
+you get response as detailed in [RFC7807](https://tools.ietf.org/html/rfc7807) with header `Content-Type:application/problem+json` and `error` log entry
 
-*request and exception listeners enabled*
 ```json
 {
     "detail": "There was a problem with the JSON that was sent with the request",
@@ -95,8 +96,9 @@ app.ERROR: Json request validation {"uri":"http://127.0.0.1:8000/my","schemaPath
 ```
 
 ### Invalid JSON passed to response
+If invalid JSON passed to response and response listeners enabled<br> 
+you get `warning` log entry
 
-*response listener enabled*
 ```bash
 app.WARNING: Json response validation {"uri":"http://127.0.0.1:8000/my","schemaPath":"JsonSchema/Response/myAction.json","errors":[{"property":"test","pointer":"/test","message":"Must be at least 1 characters long","constraint":"minLength","context":1,"minLength":1}]} []
 ```
