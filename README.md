@@ -70,7 +70,7 @@ class MyController
 ```
 
 ### Invalid JSON passed to request
-If invalid JSON passed to request and request and exception listeners enabled<br>
+If invalid JSON passed to request and config `enable_request_listener`, `enable_exception_listener` enabled<br>
 you get response as detailed in [RFC7807](https://tools.ietf.org/html/rfc7807) with header `Content-Type:application/problem+json` and `error` log entry
 
 ```json
@@ -96,7 +96,7 @@ app.ERROR: Json request validation {"uri":"http://127.0.0.1:8000/my","schemaPath
 ```
 
 ### Invalid JSON passed to response
-If invalid JSON passed to response and response listeners enabled<br> 
+If invalid JSON passed to response and config `enable_response_listener` enabled<br> 
 you get `warning` log entry
 
 ```bash
