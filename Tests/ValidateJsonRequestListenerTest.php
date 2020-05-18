@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class ValidateJsonListenerTest extends TestCase
+class ValidateJsonRequestListenerTest extends TestCase
 {
     public function testMissingAttribute()
     {
@@ -96,7 +96,7 @@ class ValidateJsonListenerTest extends TestCase
     protected function getValidateJsonListener(): ValidateJsonRequestListener
     {
         $locator   = new FileLocator([__DIR__]);
-        $validator = new JsonValidator($locator);
+        $validator = new JsonValidator($locator, __DIR__);
 
         return new ValidateJsonRequestListener($validator);
     }

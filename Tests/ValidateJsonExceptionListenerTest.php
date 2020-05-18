@@ -6,27 +6,31 @@ use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonRequest;
 use Mrsuh\JsonValidationBundle\EventListener\ValidateJsonExceptionListener;
 use Mrsuh\JsonValidationBundle\Exception\JsonValidationRequestException;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Log\Logger;
 
-class JsonValidationExceptionListenerTest extends TestCase
+class ValidateJsonExceptionListenerTest extends TestCase
 {
     public function testNonJsonValidationException()
     {
         $event    = $this->getEvent(new \RuntimeException('Not JsonValidationException'));
-        $listener = new ValidateJsonExceptionListener(new Logger());
+        $resource = fopen('php://memory', 'r+');
+        $listener = new ValidateJsonExceptionListener(new Logger(LogLevel::DEBUG, $resource));
 
         $listener->onKernelException($event);
 
         $this->assertNull($event->getResponse());
+        $this->assertFalse($this->hasResourceStr($resource, 'Json request validation'));
     }
 
     public function testEmptyErrors()
     {
         $event    = $this->getEvent($this->createJsonValidationRequestException('', []));
-        $listener = new ValidateJsonExceptionListener(new Logger());
+        $resource = fopen('php://memory', 'r+');
+        $listener = new ValidateJsonExceptionListener(new Logger(LogLevel::DEBUG, $resource));
 
         $listener->onKernelException($event);
 
@@ -38,21 +42,24 @@ class JsonValidationExceptionListenerTest extends TestCase
         $this->assertEquals(400, $json->status);
         $this->assertEquals('Unable to parse/validate JSON', $json->title);
         $this->assertEquals('There was a problem with the JSON that was sent with the request', $json->detail);
+        $this->assertTrue($this->hasResourceStr($resource, 'Json request validation'));
     }
 
     public function testMessageOnlyError()
     {
         $event = $this->getEvent($this->createJsonValidationRequestException('', [['message' => 'Test message'],]));
 
-        $listener = new ValidateJsonExceptionListener(new Logger());
+        $resource = fopen('php://memory', 'r+');
+        $listener = new ValidateJsonExceptionListener(new Logger(LogLevel::DEBUG, $resource));
         $listener->onKernelException($event);
 
         $json = json_decode($event->getResponse()->getContent(), true);
 
         $this->assertEquals([['message' => 'Test message']], $json['errors']);
+        $this->assertTrue($this->hasResourceStr($resource, 'Json request validation'));
     }
 
-    public function testContraintError()
+    public function testConstraintError()
     {
         $event = $this->getEvent($this->createJsonValidationRequestException('', [
             [
@@ -122,5 +129,20 @@ class JsonValidationExceptionListenerTest extends TestCase
         $request    = Request::create('/');
 
         return new JsonValidationRequestException($message, $request, $annotation, $errors);
+    }
+
+    /**
+     * @param resource $loggerResource
+     */
+    public function hasResourceStr($loggerResource, string $needle)
+    {
+        fseek($loggerResource, 0);
+        while ($buff = fgets($loggerResource)) {
+            if (mb_strpos($buff, $needle) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

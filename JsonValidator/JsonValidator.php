@@ -11,30 +11,24 @@ class JsonValidator
     /** @var FileLocatorInterface */
     protected $locator;
 
+    protected $schemaDir = '';
+
     /** @var array */
     protected $errors = [];
 
-    public function __construct(FileLocatorInterface $locator)
+    public function __construct(FileLocatorInterface $locator, string $schemaDir)
     {
-        $this->locator = $locator;
+        $this->locator   = $locator;
+        $this->schemaDir = $schemaDir;
     }
 
-    /**
-     * Validate JSON against a schema
-     *
-     * @param string $json
-     * @param string $schemaPath
-     * @param bool   $asArray Whether to decode the JSON as an associative array
-     * @return mixed The decoded JSON as an object (stdClass) if the JSON is
-     *                        valid, otherwise null
-     */
     public function validate(string $json, string $schemaPath): void
     {
         $this->errors = [];
         $schema       = null;
 
         try {
-            $schema = $this->locator->locate($schemaPath);
+            $schema = $this->locator->locate(rtrim($this->schemaDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $schemaPath);
         } catch (\InvalidArgumentException $e) {
             $this->errors[] = [
                 'property'   => null,
@@ -46,7 +40,7 @@ class JsonValidator
             return;
         }
 
-        $data = json_decode($json);
+        $data = json_decode($json);//@todo return from function if user need the object
 
         if ($data === null) {
             $this->errors[] = [

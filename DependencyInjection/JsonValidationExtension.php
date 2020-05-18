@@ -19,17 +19,17 @@ class JsonValidationExtension extends ConfigurableExtension
         $loader->load('services.xml');
 
         if ($config['enable_request_listener']) {
-            $container->getDefinition('mrsuh_jsonvalidation.validate_json_request_listener')
+            $container->getDefinition('mrsuh_jsonvalidation.request_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.controller', 'priority' => -100]);
         }
 
         if ($config['enable_response_listener']) {
-            $container->getDefinition('mrsuh_jsonvalidation.validate_json_response_listener')
+            $container->getDefinition('mrsuh_jsonvalidation.response_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.response', 'priority' => -100]);
         }
 
         if ($config['enable_exception_listener']) {
-            $container->getDefinition('mrsuh_jsonvalidation.json_validation_exception_listener')
+            $container->getDefinition('mrsuh_jsonvalidation.exception_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.exception', 'priority' => -100]);
         }
     }

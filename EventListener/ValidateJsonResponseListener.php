@@ -35,11 +35,11 @@ class ValidateJsonResponseListener
         /** @var ValidateJsonResponse $annotation */
         $annotation = $request->attributes->get($annotationAlias);
 
-        if (!empty($response->getStatusCode()) && !in_array($response->getStatusCode(), $annotation->getStatuses())) {
+        if (!empty($annotation->getStatuses()) && !in_array($response->getStatusCode(), $annotation->getStatuses())) {
             return;
         }
 
-        $content = $request->getContent();
+        $content = $response->getContent();
 
         if ($annotation->getEmptyIsValid() && empty($content)) {
             return;
