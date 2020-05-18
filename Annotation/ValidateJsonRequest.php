@@ -4,6 +4,9 @@ namespace Mrsuh\JsonValidationBundle\Annotation;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
 
+/**
+ * @Annotation
+ */
 class ValidateJsonRequest extends ConfigurationAnnotation
 {
     const ALIAS = 'validate_json_request';

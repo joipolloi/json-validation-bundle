@@ -3,7 +3,11 @@
 namespace Mrsuh\JsonValidationBundle\Annotation;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Annotation
+ */
 class ValidateJsonResponse extends ConfigurationAnnotation
 {
     const ALIAS = 'validate_json_response';
@@ -27,7 +31,7 @@ class ValidateJsonResponse extends ConfigurationAnnotation
      *
      * @var array
      */
-    public $statuses = [];
+    public $statuses = [Response::HTTP_OK];
 
     /**
      * @param array $data An array of key/value parameters

@@ -8,7 +8,7 @@
         <service id="mrsuh_jsonvalidation.validator"
                  class="Mrsuh\JsonValidationBundle\JsonValidator\JsonValidator">
             <argument type="service" id="file_locator"/>
-            <argument>%kernel.project_dir/src%</argument>
+            <argument>%kernel.project_dir%/src</argument>
         </service>
         <service id="mrsuh_jsonvalidation.request_listener"
                  class="Mrsuh\JsonValidationBundle\EventListener\ValidateJsonRequestListener">
