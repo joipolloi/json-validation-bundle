@@ -40,7 +40,7 @@ class ValidateJsonExceptionListener
             )
         );
 
-        $this->logger->warning('Json request validation',
+        $this->logger->error('Json request validation',
             [
                 'uri'        => $exception->getRequest()->getUri(),
                 'schemaPath' => $exception->getAnnotation()->getPath(),
