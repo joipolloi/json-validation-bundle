@@ -22,7 +22,7 @@ class JsonValidator
         $this->schemaDir = $schemaDir;
     }
 
-    public function validate(string $json, string $schemaPath): void
+    public function validate(string $json, string $schemaPath)
     {
         $this->errors = [];
         $schema       = null;
@@ -37,10 +37,10 @@ class JsonValidator
                 'constraint' => null,
             ];
 
-            return;
+            return null;
         }
 
-        $data = json_decode($json);//@todo return from function if user need the object
+        $data = json_decode($json);
 
         if ($data === null) {
             $this->errors[] = [
@@ -50,7 +50,7 @@ class JsonValidator
                 'constraint' => null,
             ];
 
-            return;
+            return null;
         }
 
         $validator = new Validator();
@@ -65,14 +65,16 @@ class JsonValidator
                 'constraint' => null,
             ];
 
-            return;
+            return null;
         }
 
         if (!$validator->isValid()) {
             $this->errors = $validator->getErrors();
 
-            return;
+            return null;
         }
+
+        return $data;
     }
 
     public function getErrors(): array

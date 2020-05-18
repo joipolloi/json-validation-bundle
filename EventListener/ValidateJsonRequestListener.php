@@ -44,7 +44,7 @@ class ValidateJsonRequestListener
             return;
         }
 
-        $this->jsonValidator->validate(
+        $objectData = $this->jsonValidator->validate(
             $content,
             $annotation->getPath()
         );
@@ -53,7 +53,11 @@ class ValidateJsonRequestListener
             throw new JsonValidationRequestException('Json request validation error', $request, $annotation, $this->jsonValidator->getErrors());
         }
 
-        $request->attributes->set('validJson', json_decode($content, $this->getAsArray($event->getController())));
+        if ($this->getAsArray($event->getController())) {
+            $request->attributes->set('validJson', json_decode($content, true));
+        } else {
+            $request->attributes->set('validJson', $objectData);
+        }
     }
 
     /**

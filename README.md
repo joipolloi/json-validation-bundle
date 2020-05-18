@@ -12,6 +12,9 @@ composer require mrsuh/json-validation-bundle
 
 ## Usage
 
+Create validation schemes<br> 
+See [json-schema](http://json-schema.org/) for more details<br>
+
 JsonSchema/Request/myAction.json
 ```json
 {
@@ -42,6 +45,11 @@ JsonSchema/Response/myAction.json
 }
 ```
 
+Create controller with annotations `ValidateJsonRequest` and/or `ValidateJsonResponse`<br>
+Specify `$validJson` argument if you want get decoded JSON data from request<br>
+Specify the `array` type of the `$validJson` argument if you want get decoded JSON data as `array`<br>
+Specify the `object` type of the `$validJson` argument or don\t specify type if you want get decoded JSON data as `object`
+
 Controller/MyController.php
 ```php
 use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonRequest;
@@ -63,7 +71,7 @@ class MyController
 
 ### Invalid JSON passed to request
 
-*and request and exception listeners enabled*
+*request and exception listeners enabled*
 ```json
 {
     "detail": "There was a problem with the JSON that was sent with the request",
@@ -88,7 +96,7 @@ app.ERROR: Json request validation {"uri":"http://127.0.0.1:8000/my","schemaPath
 
 ### Invalid JSON passed to response
 
-*and response listener enabled*
+*response listener enabled*
 ```bash
 app.WARNING: Json response validation {"uri":"http://127.0.0.1:8000/my","schemaPath":"JsonSchema/Response/myAction.json","errors":[{"property":"test","pointer":"/test","message":"Must be at least 1 characters long","constraint":"minLength","context":1,"minLength":1}]} []
 ```
@@ -97,9 +105,9 @@ app.WARNING: Json response validation {"uri":"http://127.0.0.1:8000/my","schemaP
 
 ```yaml
 mrsuh_jsonvalidation:
-    enable_request_listener: true
-    enable_response_listener: true
-    enable_exception_listener: true
+    enable_request_listener: true #default value
+    enable_response_listener: true #default value
+    enable_exception_listener: true #default value
 ```
 
 ## Single validator usage
