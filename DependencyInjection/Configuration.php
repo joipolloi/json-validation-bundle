@@ -14,7 +14,7 @@ class Configuration implements ConfigurationInterface
            ->children()
            ->booleanNode('enable_request_listener')->defaultTrue()->end()
            ->booleanNode('enable_response_listener')->defaultTrue()->end()
-           ->booleanNode('enable_exception_listener')->defaultFalse()->end();
+           ->booleanNode('enable_exception_listener')->defaultTrue()->end();
 
         return $tb;
     }
