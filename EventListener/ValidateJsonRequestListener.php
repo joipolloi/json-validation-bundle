@@ -50,7 +50,7 @@ class ValidateJsonRequestListener
         );
 
         if (!empty($this->jsonValidator->getErrors())) {
-            throw new JsonValidationRequestException('Json request validation error', $request, $annotation, $this->jsonValidator->getErrors());
+            throw new JsonValidationRequestException( $request, $annotation->getPath(), $this->jsonValidator->getErrors());
         }
 
         if ($this->getAsArray($event->getController())) {

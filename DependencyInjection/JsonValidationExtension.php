@@ -30,7 +30,7 @@ class JsonValidationExtension extends ConfigurableExtension
 
         if ($config['enable_exception_listener']) {
             $container->getDefinition('mrsuh_jsonvalidation.exception_listener')
-                      ->addTag('kernel.event_listener', ['event' => 'kernel.exception', 'priority' => -100]);
+                      ->addTag('kernel.event_listener', ['event' => 'kernel.exception']);
         }
     }
 

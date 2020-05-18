@@ -20,7 +20,7 @@ class ValidateJsonExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         //deprecated since Symfony 4.4
-        if(method_exists($event, 'getException')) {
+        if (method_exists($event, 'getException')) {
             $exception = $event->getException();
         } else {
             $exception = $event->getThrowable();
@@ -48,7 +48,7 @@ class ValidateJsonExceptionListener
         $this->logger->error('Json request validation',
             [
                 'uri'        => $exception->getRequest()->getUri(),
-                'schemaPath' => $exception->getAnnotation()->getPath(),
+                'schemaPath' => $exception->getSchemaPath(),
                 'errors'     => $exception->getErrors()
             ]
         );

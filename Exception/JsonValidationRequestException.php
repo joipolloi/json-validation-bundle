@@ -2,7 +2,6 @@
 
 namespace Mrsuh\JsonValidationBundle\Exception;
 
-use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -14,20 +13,15 @@ class JsonValidationRequestException extends BadRequestHttpException
     /** @var Request */
     protected $request;
 
-    /** @var ValidateJsonRequest */
-    protected $annotation;
+    protected $schemaPath = '';
 
-    /**
-     * @param string $message The exception message
-     * @param array  $errors  Any validation errors
-     */
-    public function __construct(string $message, Request $request, ValidateJsonRequest $annotation, array $errors = [])
+    public function __construct(Request $request, string $schemaPath, array $errors = [])
     {
         $this->request    = $request;
-        $this->annotation = $annotation;
+        $this->schemaPath = $schemaPath;
         $this->errors     = $errors;
 
-        parent::__construct($message);
+        parent::__construct('Json request validation error');
     }
 
     public function getErrors(): array
@@ -40,8 +34,8 @@ class JsonValidationRequestException extends BadRequestHttpException
         return $this->request;
     }
 
-    public function getAnnotation(): ValidateJsonRequest
+    public function getSchemaPath(): string
     {
-        return $this->annotation;
+        return $this->schemaPath;
     }
 }

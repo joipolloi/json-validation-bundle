@@ -28,7 +28,7 @@ class ValidateJsonExceptionListenerTest extends TestCase
 
     public function testEmptyErrors()
     {
-        $event    = $this->getEvent($this->createJsonValidationRequestException('', []));
+        $event    = $this->getEvent($this->createJsonValidationRequestException([]));
         $resource = fopen('php://memory', 'r+');
         $listener = new ValidateJsonExceptionListener(new Logger(LogLevel::DEBUG, $resource));
 
@@ -47,7 +47,7 @@ class ValidateJsonExceptionListenerTest extends TestCase
 
     public function testMessageOnlyError()
     {
-        $event = $this->getEvent($this->createJsonValidationRequestException('', [['message' => 'Test message'],]));
+        $event = $this->getEvent($this->createJsonValidationRequestException([['message' => 'Test message'],]));
 
         $resource = fopen('php://memory', 'r+');
         $listener = new ValidateJsonExceptionListener(new Logger(LogLevel::DEBUG, $resource));
@@ -61,7 +61,7 @@ class ValidateJsonExceptionListenerTest extends TestCase
 
     public function testConstraintError()
     {
-        $event = $this->getEvent($this->createJsonValidationRequestException('', [
+        $event = $this->getEvent($this->createJsonValidationRequestException([
             [
                 'constraint' => 'a',
                 'property'   => 'b',
@@ -87,7 +87,7 @@ class ValidateJsonExceptionListenerTest extends TestCase
 
     public function testMixedErrors()
     {
-        $event = $this->getEvent($this->createJsonValidationRequestException('', [
+        $event = $this->getEvent($this->createJsonValidationRequestException([
             ['message' => 'Test message'],
             [
                 'constraint' => 'a',
@@ -123,12 +123,9 @@ class ValidateJsonExceptionListenerTest extends TestCase
         return new ExceptionEvent($kernel, $request, $requestType, $exception);
     }
 
-    protected function createJsonValidationRequestException(string $message, array $errors = [])
+    protected function createJsonValidationRequestException(array $errors = [])
     {
-        $annotation = new ValidateJsonRequest(['path' => '/']);
-        $request    = Request::create('/');
-
-        return new JsonValidationRequestException($message, $request, $annotation, $errors);
+        return new JsonValidationRequestException(Request::create('/'), '/', $errors);
     }
 
     /**
