@@ -28,9 +28,9 @@ class ValidateJsonResponseTest extends TestCase
     public function constructorOptionsProvider(): array
     {
         return [
-            [['value' => 'abc'], 'abc', false, [200]],
-            [['path' => 'abc'], 'abc', false, [200]],
-            [['path' => 'abc', 'emptyIsValid' => true], 'abc', true, [200]],
+            [['value' => 'abc'], 'abc', false, []],
+            [['path' => 'abc'], 'abc', false, []],
+            [['path' => 'abc', 'emptyIsValid' => true], 'abc', true, []],
             [['path' => 'abc', 'statuses' => [200, 201]], 'abc', false, [200, 201]],
         ];
     }

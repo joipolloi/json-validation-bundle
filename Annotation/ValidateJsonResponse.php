@@ -31,7 +31,7 @@ class ValidateJsonResponse extends ConfigurationAnnotation
      *
      * @var array
      */
-    public $statuses = [Response::HTTP_OK];
+    public $statuses = [];
 
     /**
      * @param array $data An array of key/value parameters
