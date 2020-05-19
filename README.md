@@ -108,7 +108,7 @@ app.WARNING: Json response validation {"uri":"http://127.0.0.1:8000/my","schemaP
 ## Configuration
 
 ```yaml
-mrsuh_jsonvalidation:
+mrsuh_json_validation:
     enable_request_listener: true #default value
     enable_response_listener: true #default value
     enable_exception_listener: true #default value
@@ -130,7 +130,7 @@ class MyController
         $errors = $validator->getErrors();
         if(!empty($errors)) {
             // do something with errors
-        }   
+        }
         
         return new Response();
     }

@@ -19,17 +19,17 @@ class JsonValidationExtension extends ConfigurableExtension
         $loader->load('services.xml');
 
         if ($config['enable_request_listener']) {
-            $container->getDefinition('mrsuh_jsonvalidation.request_listener')
+            $container->getDefinition('mrsuh_json_validation.request_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.controller', 'priority' => -100]);
         }
 
         if ($config['enable_response_listener']) {
-            $container->getDefinition('mrsuh_jsonvalidation.response_listener')
+            $container->getDefinition('mrsuh_json_validation.response_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.response', 'priority' => -100]);
         }
 
         if ($config['enable_exception_listener']) {
-            $container->getDefinition('mrsuh_jsonvalidation.exception_listener')
+            $container->getDefinition('mrsuh_json_validation.exception_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.exception']);
         }
     }
@@ -39,6 +39,6 @@ class JsonValidationExtension extends ConfigurableExtension
      */
     public function getAlias(): string
     {
-        return 'mrsuh_jsonvalidation';
+        return 'mrsuh_json_validation';
     }
 }
