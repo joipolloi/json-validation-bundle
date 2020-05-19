@@ -46,12 +46,14 @@ JsonSchema/Response/myAction.json
 ```
 
 Create controller with annotations `ValidateJsonRequest` and/or `ValidateJsonResponse`<br>
-Specify `$validJson` argument if you want get decoded JSON data from request<br>
+Specify `$validJson` argument if you want get decoded JSON data from the request<br>
 Specify the `array` type of the `$validJson` argument if you want get decoded JSON data as `array`<br>
-Specify the `object` type of the `$validJson` argument or don\t specify type if you want get decoded JSON data as `object`
+Specify the `object` type of the `$validJson` argument or don't specify type if you want get decoded JSON data as `object`
 
 Controller/MyController.php
 ```php
+<?php
+
 use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonRequest;
 use Mrsuh\JsonValidationBundle\Annotation\ValidateJsonResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -114,6 +116,8 @@ mrsuh_jsonvalidation:
 
 ## Single validator usage
 ```php
+<?php
+
 use Mrsuh\JsonValidationBundle\JsonValidator\JsonValidator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
