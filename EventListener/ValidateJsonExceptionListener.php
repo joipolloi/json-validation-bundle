@@ -17,13 +17,15 @@ class ValidateJsonExceptionListener
         $this->logger = $logger;
     }
 
-    public function onKernelException(ExceptionEvent $event): void
+    /**
+     * @param ExceptionEvent|GetResponseForExceptionEvent $event
+     */
+    public function onKernelException($event): void
     {
-        //deprecated since Symfony 4.4
-        if (method_exists($event, 'getException')) {
-            $exception = $event->getException();
-        } else {
+        if (method_exists($event, 'getThrowable')) {
             $exception = $event->getThrowable();
+        } else {
+            $exception = $event->getException();
         }
 
         if (!$exception instanceof JsonValidationRequestException) {

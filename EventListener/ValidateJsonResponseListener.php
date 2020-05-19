@@ -21,7 +21,10 @@ class ValidateJsonResponseListener
         $this->logger        = $logger;
     }
 
-    public function onKernelResponse(ResponseEvent $event): void
+    /**
+     * @param ResponseEvent|FilterResponseEvent $event
+     */
+    public function onKernelResponse($event): void
     {
         $request  = $event->getRequest();
         $response = $event->getResponse();

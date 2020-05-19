@@ -2,7 +2,7 @@
 
 ![Test Status](https://github.com/mrsuh/json-validation-bundle/workflows/Tests/badge.svg)
 
-A Symfony 4/5 bundle that provides an annotation to validate request/response JSON against a schema.
+A Symfony bundle that provides an annotation to validate request/response JSON against a schema.
 
 ## Installation
 

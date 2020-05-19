@@ -17,7 +17,10 @@ class ValidateJsonRequestListener
         $this->jsonValidator = $jsonValidator;
     }
 
-    public function onKernelController(ControllerEvent $event): void
+    /**
+     * @param ControllerEvent|FilterControllerEvent $event
+     */
+    public function onKernelController($event): void
     {
         $request = $event->getRequest();
 
