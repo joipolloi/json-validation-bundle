@@ -4,6 +4,12 @@
 
 A Symfony bundle that provides an annotation to validate request/response JSON against a schema.
 
+###R Differences from joipolloi/json-validation-bundle
+* added `response` validation
+* supporting Symfony `>=3.4`, `4.*`, `5.*`
+* error/warnings logging
+* single validator usage
+
 ## Installation
 
 ```bash
