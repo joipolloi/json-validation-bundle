@@ -7,13 +7,9 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class JsonValidationRequestException extends BadRequestHttpException
 {
-    /** @var array */
-    protected $errors = [];
-
-    /** @var Request */
-    protected $request;
-
-    protected $schemaPath = '';
+    protected array   $errors     = [];
+    protected Request $request;
+    protected string  $schemaPath = '';
 
     public function __construct(Request $request, string $schemaPath, array $errors = [])
     {

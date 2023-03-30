@@ -23,7 +23,7 @@ class ValidateJsonResponseListenerTest extends TestCase
         $request  = Request::create('/');
         $response = new Response('', 201);
 
-        $request->attributes->set(sprintf('_%s', ValidateJsonResponse::ALIAS), $annotation);
+        $request->attributes->set(ValidateJsonResponse::class, $annotation);
 
         $event = $this->getResponseEvent($request, $response);
 
@@ -42,7 +42,7 @@ class ValidateJsonResponseListenerTest extends TestCase
         $request  = Request::create('/');
         $response = new Response('{invalid', 200);
 
-        $request->attributes->set(sprintf('_%s', ValidateJsonResponse::ALIAS), $annotation);
+        $request->attributes->set(ValidateJsonResponse::class, $annotation);
 
         $event = $this->getResponseEvent($request, $response);
 
@@ -61,7 +61,7 @@ class ValidateJsonResponseListenerTest extends TestCase
         $request  = Request::create('/');
         $response = new Response('{"test": "hello"}', 200);
 
-        $request->attributes->set(sprintf('_%s', ValidateJsonResponse::ALIAS), $annotation);
+        $request->attributes->set(ValidateJsonResponse::class, $annotation);
 
         $event = $this->getResponseEvent($request, $response);
 
@@ -85,7 +85,7 @@ class ValidateJsonResponseListenerTest extends TestCase
     protected function getResponseEvent(Request $request, Response $response): ResponseEvent
     {
         $kernel = $this->getMockBuilder(HttpKernelInterface::class)->getMock();
-        $type   = HttpKernelInterface::MASTER_REQUEST;
+        $type   = HttpKernelInterface::MAIN_REQUEST;
 
         return new ResponseEvent($kernel, $request, $type, $response);
     }

@@ -10,8 +10,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('mrsuh_json_validation');
-        $rootNode    = method_exists(TreeBuilder::class, 'getRootNode') ? $treeBuilder->getRootNode() : $treeBuilder->root('mrsuh_json_validation');
-        $rootNode
+        $treeBuilder
+            ->getRootNode()
             ->children()
             ->booleanNode('enable_request_listener')->defaultTrue()->end()
             ->booleanNode('enable_response_listener')->defaultTrue()->end()

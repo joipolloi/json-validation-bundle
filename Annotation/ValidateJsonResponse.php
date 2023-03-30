@@ -9,8 +9,6 @@ namespace Mrsuh\JsonValidationBundle\Annotation;
 #[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_METHOD)]
 class ValidateJsonResponse
 {
-    const ALIAS = 'validate_json_response';
-
     private string $path         = '';
     private bool   $emptyIsValid = false;
     public array   $statuses     = [];

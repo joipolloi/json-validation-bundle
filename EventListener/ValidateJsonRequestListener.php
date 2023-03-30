@@ -9,6 +9,8 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class ValidateJsonRequestListener
 {
+    use AnnotationReader;
+
     protected JsonValidator $jsonValidator;
 
     public function __construct(JsonValidator $jsonValidator)
@@ -23,14 +25,10 @@ class ValidateJsonRequestListener
     {
         $request = $event->getRequest();
 
-        $annotationAlias = sprintf('_%s', ValidateJsonRequest::ALIAS);
-
-        if (!$request->attributes->has($annotationAlias)) {
+        $annotation = self::getAnnotation($request, ValidateJsonRequest::class);
+        if ($annotation === null) {
             return;
         }
-
-        /** @var ValidateJsonRequest $annotation */
-        $annotation = $request->attributes->get($annotationAlias);
 
         $httpMethods = array_map(function (string $method): string {
             return strtoupper($method);

@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class JsonValidationExtension extends Extension
 {
-    public function load(array $config, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator([
             __DIR__ . '/../Resources/config/'
@@ -17,17 +17,20 @@ class JsonValidationExtension extends Extension
 
         $loader->load('services.xml');
 
-        if ($config['enable_request_listener']) {
+        $configuration = new Configuration();
+        $configs = $this->processConfiguration($configuration, $configs);
+
+        if ($configs['enable_request_listener']) {
             $container->getDefinition('mrsuh_json_validation.request_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.controller', 'priority' => -100]);
         }
 
-        if ($config['enable_response_listener']) {
+        if ($configs['enable_response_listener']) {
             $container->getDefinition('mrsuh_json_validation.response_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.response', 'priority' => -100]);
         }
 
-        if ($config['enable_exception_listener']) {
+        if ($configs['enable_exception_listener']) {
             $container->getDefinition('mrsuh_json_validation.exception_listener')
                       ->addTag('kernel.event_listener', ['event' => 'kernel.exception']);
         }
