@@ -1,22 +1,33 @@
-name: Tests
+name: "tests"
 
 on:
     push:
-        branches: [ master, dev ]
-    pull_request:
-        branches: [ master, dev ]
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+    phpunit:
+        name:    "Tests"
+        runs-on: ${{ matrix.operating-system }}
+        strategy:
+            matrix:
+                php-version:
+                    - "8.1"
+                    - "8.2"
+                operating-system:
+                    - "ubuntu-latest"
+
         steps:
-            -   uses: actions/checkout@v2
+            -   name: "Checkout"
+                uses: "actions/checkout@v3"
 
-            -   name: Validate composer.json and composer.lock
-                run: composer validate
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+                    ini-values:  memory_limit=-1
+                    tools:       composer:v2
 
-            -   name: Install dependencies
-                run: composer install --prefer-dist --no-progress --no-suggest
+            -   name: "Install dependencies"
+                run:  "composer install --no-interaction --no-progress --no-suggest"
 
-            -   name: Run tests
-                run: php vendor/bin/phpunit
+            -   name: "Tests"
+                run:  "php vendor/bin/phpunit"

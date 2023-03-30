@@ -1,6 +1,8 @@
 # JSON Validation Bundle
 
-![Test Status](https://github.com/mrsuh/json-validation-bundle/workflows/Tests/badge.svg)
+![](https://github.com/mrsuh/json-validation-bundle/actions/workflows/tests.yml/badge.svg)
+![](https://img.shields.io/github/license/json-validation-bundle.svg)
+![](https://img.shields.io/github/v/release/mrsuh/json-validation-bundle)
 
 A Symfony bundle that provides an annotation to validate request/response JSON against a schema.
 
