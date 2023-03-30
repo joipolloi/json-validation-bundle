@@ -3,12 +3,13 @@
     "description": "This bundle provides a way to validate JSON in request/response against a schema",
     "type": "symfony-bundle",
     "require": {
-        "php": ">=7.1",
+        "php": ">=8.0",
         "ext-json": "*",
         "symfony/config": ">=3.0",
-        "symfony/http-foundation": ">=3.2",
+        "symfony/http-foundation": "^6.0",
+        "symfony/http-kernel": "^6.0",
+        "symfony/dependency-injection": "^6.0",
         "justinrainbow/json-schema": ">=5.2",
-        "sensio/framework-extra-bundle": ">=3.0",
         "psr/log": "^1.1"
     },
     "require-dev": {

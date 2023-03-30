@@ -9,8 +9,7 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class ValidateJsonRequestListener
 {
-    /** @var JsonValidator */
-    protected $jsonValidator;
+    protected JsonValidator $jsonValidator;
 
     public function __construct(JsonValidator $jsonValidator)
     {
@@ -53,7 +52,7 @@ class ValidateJsonRequestListener
         );
 
         if (!empty($this->jsonValidator->getErrors())) {
-            throw new JsonValidationRequestException( $request, $annotation->getPath(), $this->jsonValidator->getErrors());
+            throw new JsonValidationRequestException($request, $annotation->getPath(), $this->jsonValidator->getErrors());
         }
 
         if ($this->getAsArray($event->getController())) {
@@ -88,7 +87,7 @@ class ValidateJsonRequestListener
                 continue;
             }
 
-            return $param->isArray();
+            return $param->getType() && $param->getType()->getName() === 'array';
         }
 
         return false;

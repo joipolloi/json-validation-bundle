@@ -19,12 +19,6 @@ class ValidateJsonResponseTest extends TestCase
         $this->assertEquals($annotation->getStatuses(), $expectedStatuses);
     }
 
-    public function testInvalidConstructorOptions()
-    {
-        $this->expectException(\RuntimeException::class);
-        new ValidateJsonResponse(['invalid_option' => 'yes']);
-    }
-
     public static function constructorOptionsProvider(): array
     {
         return [

@@ -68,7 +68,7 @@ class ValidateJsonRequestListenerTest extends TestCase
         $listener->onKernelController($event);
 
         $this->assertTrue($request->attributes->has('validJson'));
-        $this->assertEquals($request->attributes->get('validJson')->test, 'hello');
+        $this->assertEquals('hello', $request->attributes->get('validJson')->test);
     }
 
     public function testValidJsonArray()
@@ -81,7 +81,7 @@ class ValidateJsonRequestListenerTest extends TestCase
                            ->getMock();
         $controller = function (array $validJson) {
         };
-        $type       = HttpKernelInterface::MASTER_REQUEST;
+        $type       = HttpKernelInterface::MAIN_REQUEST;
         $event      = new ControllerEvent($kernel, $controller, $request, $type);
 
         $listener = $this->getValidateJsonListener();
@@ -90,7 +90,7 @@ class ValidateJsonRequestListenerTest extends TestCase
 
         $this->assertTrue($request->attributes->has('validJson'));
         $this->assertTrue(is_array($request->attributes->get('validJson')));
-        $this->assertEquals($request->attributes->get('validJson')['test'], 'hello');
+        $this->assertEquals('hello', $request->attributes->get('validJson')['test']);
     }
 
     protected function getValidateJsonListener(): ValidateJsonRequestListener
@@ -107,7 +107,7 @@ class ValidateJsonRequestListenerTest extends TestCase
                            ->getMock();
         $controller = function ($validJson) {
         };
-        $type       = HttpKernelInterface::MASTER_REQUEST;
+        $type       = HttpKernelInterface::MAIN_REQUEST;
 
         return new ControllerEvent($kernel, $controller, $request, $type);
     }

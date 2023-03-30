@@ -2,15 +2,14 @@
 
 namespace Mrsuh\JsonValidationBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
-class JsonValidationExtension extends ConfigurableExtension
+class JsonValidationExtension extends Extension
 {
-    public function loadInternal(array $config, ContainerBuilder $container): void
+    public function load(array $config, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator([
             __DIR__ . '/../Resources/config/'

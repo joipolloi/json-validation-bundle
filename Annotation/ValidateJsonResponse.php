@@ -2,50 +2,33 @@
 
 namespace Mrsuh\JsonValidationBundle\Annotation;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * @Annotation
+ * @Target({"METHOD"})
  */
-class ValidateJsonResponse extends ConfigurationAnnotation
+#[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_METHOD)]
+class ValidateJsonResponse
 {
     const ALIAS = 'validate_json_response';
 
-    /**
-     * The path to the JSON schema
-     *
-     * @var string
-     */
-    private $path = '';
+    private string $path         = '';
+    private bool   $emptyIsValid = false;
+    public array   $statuses     = [];
 
-    /**
-     * Whether an empty JSON request value is valid
-     *
-     * @var bool
-     */
-    private $emptyIsValid = false;
-
-    /**
-     * Only validate on certain HTTP statuses
-     *
-     * @var array
-     */
-    public $statuses = [];
-
-    /**
-     * @param array $data An array of key/value parameters
-     * @throws \BadMethodCallException
-     * @see Symfony\Component\Routing\Annotation\Route
-     */
     public function __construct(array $data)
     {
         if (isset($data['value'])) {
-            $data['path'] = $data['value'];
-            unset($data['value']);
+            $this->path = $data['value'];
         }
-
-        parent::__construct($data);
+        if (isset($data['path'])) {
+            $this->path = $data['path'];
+        }
+        if (isset($data['emptyIsValid'])) {
+            $this->emptyIsValid = $data['emptyIsValid'];
+        }
+        if (isset($data['statuses'])) {
+            $this->statuses = $data['statuses'];
+        }
     }
 
     public function setPath(string $path): void
@@ -82,21 +65,5 @@ class ValidateJsonResponse extends ConfigurationAnnotation
     public function getStatuses(): array
     {
         return $this->statuses;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAliasName(): string
-    {
-        return self::ALIAS;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function allowArray(): bool
-    {
-        return false;
     }
 }

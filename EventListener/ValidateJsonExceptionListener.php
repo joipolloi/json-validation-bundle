@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 class ValidateJsonExceptionListener
 {
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(LoggerInterface $logger)
     {

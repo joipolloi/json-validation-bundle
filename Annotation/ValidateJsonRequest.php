@@ -2,49 +2,33 @@
 
 namespace Mrsuh\JsonValidationBundle\Annotation;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
-
 /**
  * @Annotation
+ * @Target({"METHOD"})
  */
-class ValidateJsonRequest extends ConfigurationAnnotation
+#[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_METHOD)]
+class ValidateJsonRequest
 {
     const ALIAS = 'validate_json_request';
 
-    /**
-     * The path to the JSON schema
-     *
-     * @var string
-     */
-    private $path = '';
+    private string $path         = '';
+    private bool   $emptyIsValid = false;
+    private array  $methods      = [];
 
-    /**
-     * Whether an empty JSON request value is valid
-     *
-     * @var bool
-     */
-    private $emptyIsValid = false;
-
-    /**
-     * Only validate on certain HTTP method(s)
-     *
-     * @var array
-     */
-    private $methods = [];
-
-    /**
-     * @param array $data An array of key/value parameters
-     * @throws \BadMethodCallException
-     * @see Symfony\Component\Routing\Annotation\Route
-     */
     public function __construct(array $data)
     {
         if (isset($data['value'])) {
-            $data['path'] = $data['value'];
-            unset($data['value']);
+            $this->path = $data['value'];
         }
-
-        parent::__construct($data);
+        if (isset($data['path'])) {
+            $this->path = $data['path'];
+        }
+        if (isset($data['emptyIsValid'])) {
+            $this->emptyIsValid = $data['emptyIsValid'];
+        }
+        if (isset($data['methods'])) {
+            $this->methods = $data['methods'];
+        }
     }
 
     public function setPath(string $path): void
@@ -79,21 +63,5 @@ class ValidateJsonRequest extends ConfigurationAnnotation
     public function getMethods(): array
     {
         return $this->methods;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAliasName(): string
-    {
-        return self::ALIAS;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function allowArray(): bool
-    {
-        return false;
     }
 }
