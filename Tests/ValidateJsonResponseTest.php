@@ -25,7 +25,7 @@ class ValidateJsonResponseTest extends TestCase
         new ValidateJsonResponse(['invalid_option' => 'yes']);
     }
 
-    public function constructorOptionsProvider(): array
+    public static function constructorOptionsProvider(): array
     {
         return [
             [['value' => 'abc'], 'abc', false, []],
