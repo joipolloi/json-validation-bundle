@@ -6,14 +6,18 @@ A Symfony bundle that provides an annotation to validate request/response JSON a
 
 ### Differences from joipolloi/json-validation-bundle
 * added `response` validation
-* supporting Symfony `>=3.4`, `4.*`, `5.*`
+* supporting Symfony `>=3.4`, `4.*`, `5.*`, `6.*`
 * error/warnings logging
 * single validator usage
+
+## Versions
+* ^3 for Symfony `< 6.*`
+* ^4 for Symfony `>= 6.*`
 
 ## Installation
 
 ```bash
-composer require mrsuh/json-validation-bundle
+composer require mrsuh/json-validation-bundle ^4
 ```
 
 ## Usage
